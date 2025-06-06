@@ -10,13 +10,7 @@ const StorageSystem = ({ selectedGame, onBackToGames, onStorageSelect }) => {
   const [selectedStorage, setSelectedStorage] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
   // Fetch storage systems for the selected game
-  useEffect(() => {
-    if (selectedGame) {
-      fetchStorageSystems();
-    }
-  }, [selectedGame]);
   const fetchStorageSystems = async () => {
     try {
       setLoading(true);
@@ -28,8 +22,14 @@ const StorageSystem = ({ selectedGame, onBackToGames, onStorageSelect }) => {
       console.error('Error fetching storage systems:', err);
     } finally {
       setLoading(false);
+    }  };
+
+  // Fetch storage systems for the selected game
+  useEffect(() => {
+    if (selectedGame) {
+      fetchStorageSystems();
     }
-  };
+  }, [selectedGame, fetchStorageSystems]);
 
   const handleAddStorage = async (e) => {
     e.preventDefault();

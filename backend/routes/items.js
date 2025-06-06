@@ -38,14 +38,17 @@ router.get('/:id', async (req, res) => {
 // GET /api/items/storage/:storageSystemId - Get items for a specific storage system
 router.get('/storage/:storageSystemId', async (req, res) => {
   try {
+    console.log('Fetching items for storage system:', req.params.storageSystemId);
     const items = await Item.find({ storageSystem: req.params.storageSystemId }).populate({
       path: 'storageSystem',
       populate: {
         path: 'game'
       }
     });
+    console.log('Found items:', items.length);
     res.json(items);
   } catch (error) {
+    console.error('Error in GET /storage/:storageSystemId:', error);
     res.status(500).json({ message: error.message });
   }
 });
@@ -53,6 +56,7 @@ router.get('/storage/:storageSystemId', async (req, res) => {
 // POST /api/items - Create a new item
 router.post('/', async (req, res) => {
   try {
+    console.log('Creating new item with data:', req.body);
     const item = new Item({
       name: req.body.name,
       quantity: req.body.quantity,
@@ -65,8 +69,10 @@ router.post('/', async (req, res) => {
         path: 'game'
       }
     });
+    console.log('Created item:', newItem);
     res.status(201).json(newItem);
   } catch (error) {
+    console.error('Error in POST /items:', error);
     res.status(400).json({ message: error.message });
   }
 });
