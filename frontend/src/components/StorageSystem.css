@@ -1,0 +1,243 @@
+.storage-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.storage-content {
+  background-color: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+.storage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.back-btn {
+  position: absolute;
+  left: 0;
+  padding: 10px 16px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
+}
+
+.storage-header h1 {
+  color: #333;
+  margin: 0 auto;
+  font-size: 2rem;
+}
+
+.selected-game-display {
+  background-color: #e8f4fd;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  border: 1px solid #bee5eb;
+}
+
+.selected-game-display h2 {
+  margin: 0;
+  color: #0056b3;
+  font-size: 1.2rem;
+}
+
+.error-message {
+  background-color: #fee;
+  color: #c33;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border: 1px solid #fcc;
+}
+
+.add-storage-form {
+  margin-bottom: 30px;
+}
+
+.input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.storage-input {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.storage-input:focus {
+  border-color: #28a745;
+}
+
+.storage-input:disabled {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+}
+
+.add-storage-btn {
+  padding: 12px 24px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 180px;
+}
+
+.add-storage-btn:hover:not(:disabled) {
+  background-color: #218838;
+  transform: translateY(-1px);
+}
+
+.add-storage-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.storage-dropdown-section {
+  margin-bottom: 30px;
+}
+
+.dropdown-label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+}
+
+.storage-dropdown {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  background-color: white;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.storage-dropdown:focus {
+  border-color: #28a745;
+}
+
+.storage-dropdown:disabled {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+}
+
+.selected-storage-info {
+  background-color: #d4edda;
+  padding: 20px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border: 1px solid #c3e6cb;
+}
+
+.selected-storage-info h3 {
+  margin: 0 0 10px 0;
+  color: #155724;
+}
+
+.selected-storage-info p {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
+
+.storage-count {
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.proceed-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.proceed-btn:hover {
+  background-color: #0056b3;
+}
+
+.proceed-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .storage-container {
+    padding: 10px;
+  }
+  
+  .storage-content {
+    padding: 20px;
+    max-width: 100%;
+  }
+  
+  .storage-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+  
+  .back-btn {
+    position: static;
+    align-self: flex-start;
+  }
+  
+  .storage-header h1 {
+    margin: 0;
+  }
+  
+  .input-group {
+    flex-direction: column;
+  }
+  
+  .add-storage-btn {
+    width: 100%;
+  }
+}
