@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import './StorageSystem.css';
 
@@ -7,22 +7,32 @@ const API_BASE_URL = 'http://localhost:5000/api';
 const StorageSystem = ({ selectedGame, onBackToGames, onStorageSelect }) => {
   const [storageSystems, setStorageSystems] = useState([]);
   const [newStorageName, setNewStorageName] = useState('');
-  const [selectedStorage, setSelectedStorage] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [selectedStorage, setSelectedStorage] = useState('');  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  // Fetch storage systems for the selected game
-  const fetchStorageSystems = async () => {
+
+  // Debug logging
+  console.log('StorageSystem render - loading:', loading, 'selectedGame:', selectedGame);// Fetch storage systems for the selected game
+  const fetchStorageSystems = useCallback(async () => {
+    if (!selectedGame || !selectedGame._id) {
+      console.log('No selected game, skipping fetch');
+      return;
+    }
+    
     try {
       setLoading(true);
+      console.log('Fetching storage systems for game:', selectedGame._id);
       const response = await axios.get(`${API_BASE_URL}/storage/game/${selectedGame._id}`);
+      console.log('Storage systems response:', response.data);
       setStorageSystems(response.data);
       setError('');
     } catch (err) {
-      setError('Failed to fetch storage systems');
       console.error('Error fetching storage systems:', err);
+      setError('Failed to fetch storage systems');
     } finally {
       setLoading(false);
-    }  };
+      console.log('Loading set to false');
+    }
+  }, [selectedGame]);
 
   // Fetch storage systems for the selected game
   useEffect(() => {
@@ -30,13 +40,14 @@ const StorageSystem = ({ selectedGame, onBackToGames, onStorageSelect }) => {
       fetchStorageSystems();
     }
   }, [selectedGame, fetchStorageSystems]);
-
   const handleAddStorage = async (e) => {
     e.preventDefault();
     if (!newStorageName.trim()) {
       setError('Storage system name is required');
       return;
-    }    try {
+    }
+
+    try {
       setLoading(true);
       const response = await axios.post(`${API_BASE_URL}/storage`, {
         name: newStorageName.trim(),
