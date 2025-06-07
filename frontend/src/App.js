@@ -1,54 +1,116 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useParams, useLocation } from 'react-router-dom';
 import Game from './components/Game';
 import StorageSystem from './components/StorageSystem';
-import Item from './components/Item';
+import Item from './components/Item_new';
 import './App.css';
 
-function App() {
-  const [currentView, setCurrentView] = useState('games');
-  const [selectedGame, setSelectedGame] = useState(null);
-  const [selectedStorage, setSelectedStorage] = useState(null);
+// Force recompilation - Item component clean rebuild
 
+// Wrapper component for Game page
+function GamePage() {
+  const navigate = useNavigate();
+  
   const handleGameSelect = (game) => {
-    setSelectedGame(game);
-    setCurrentView('storage');
+    navigate(`/game/${game._id}/storage`, { 
+      state: { selectedGame: game } 
+    });
+  };
+
+  return <Game onGameSelect={handleGameSelect} />;
+}
+
+// Wrapper component for StorageSystem page
+function StorageSystemPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { gameId } = useParams();
+  
+  // Get game data from navigation state or localStorage
+  const selectedGame = 
+    location.state?.selectedGame || 
+    JSON.parse(localStorage.getItem(`game_${gameId}`)) || 
+    null;
+
+  // Save game to localStorage for page refreshes
+  useEffect(() => {
+    if (selectedGame && gameId) {
+      localStorage.setItem(`game_${gameId}`, JSON.stringify(selectedGame));
+    }
+  }, [selectedGame, gameId]);
+
+  const handleBackToGames = () => {
+    navigate('/');
   };
 
   const handleStorageSelect = (storage) => {
-    setSelectedStorage(storage);
-    setCurrentView('items');
-  };
-
-  const handleBackToGames = () => {
-    setCurrentView('games');
-    setSelectedGame(null);
-    setSelectedStorage(null);
-  };
-
-  const handleBackToStorage = () => {
-    setCurrentView('storage');
-    setSelectedStorage(null);
+    navigate(`/game/${gameId}/storage/${storage._id}/items`, {
+      state: { 
+        selectedGame: selectedGame,
+        selectedStorage: storage 
+      }
+    });
   };
 
   return (
-    <div className="App">
-      {currentView === 'games' && (
-        <Game onGameSelect={handleGameSelect} />
-      )}
-      {currentView === 'storage' && (
-        <StorageSystem 
-          selectedGame={selectedGame}
-          onBackToGames={handleBackToGames}
-          onStorageSelect={handleStorageSelect}
-        />
-      )}
-      {currentView === 'items' && (
-        <Item 
-          selectedStorage={selectedStorage}
-          onBackToStorage={handleBackToStorage}
-        />
-      )}
-    </div>
+    <StorageSystem 
+      selectedGame={selectedGame}
+      onBackToGames={handleBackToGames}
+      onStorageSelect={handleStorageSelect}
+    />
+  );
+}
+
+// Wrapper component for Item page
+function ItemPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { gameId, storageId } = useParams();
+  
+  // Get data from navigation state or localStorage
+  const selectedGame = 
+    location.state?.selectedGame || 
+    JSON.parse(localStorage.getItem(`game_${gameId}`)) || 
+    null;
+  
+  const [selectedStorage, setSelectedStorage] = useState(
+    location.state?.selectedStorage || 
+    JSON.parse(localStorage.getItem(`storage_${storageId}`)) || 
+    null
+  );
+
+  // Save storage to localStorage for page refreshes
+  useEffect(() => {
+    if (selectedStorage && storageId) {
+      localStorage.setItem(`storage_${storageId}`, JSON.stringify(selectedStorage));
+    }
+  }, [selectedStorage, storageId]);
+
+  const handleBackToStorage = () => {
+    navigate(`/game/${gameId}/storage`, {
+      state: { selectedGame: selectedGame }
+    });
+  };
+
+  return (
+    <Item 
+      selectedStorage={selectedStorage}
+      onBackToStorage={handleBackToStorage}
+    />
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<GamePage />} />
+          <Route path="/game/:gameId/storage" element={<StorageSystemPage />} />
+          <Route path="/game/:gameId/storage/:storageId/items" element={<ItemPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
