@@ -89,82 +89,80 @@ const Game = ({ onGameSelect }) => {
 
   return (
     <div className="game-container">
-      <div className="game-content">
-        <h1>Game Manager</h1>
+      <div className="game-content fade-in">
+        <h1>🎮 Game Inventory Tracker</h1>
         
         {error && <div className="error-message">{error}</div>}
         
-        {/* Add Game Form */}
-        <form onSubmit={handleAddGame} className="add-game-form">
-          <div className="input-group">
-            <input
-              type="text"
-              value={newGameName}
-              onChange={(e) => setNewGameName(e.target.value)}
-              placeholder="Enter game name..."
-              className="game-input"
-              disabled={loading}
-            />
-            <button 
-              type="submit" 
-              className="add-game-btn"
-              disabled={loading || !newGameName.trim()}
-            >
-              {loading ? 'Adding...' : 'Add Game'}
-            </button>
-          </div>
-        </form>
-
-        {/* Games Dropdown */}
-        <div className="games-dropdown-section">
-          <label htmlFor="games-select" className="dropdown-label">
-            Select a Game:
-          </label>
-          <select
-            id="games-select"
-            value={selectedGameId}
-            onChange={(e) => handleGameSelect(e.target.value)}
-            className="games-dropdown"
-            disabled={loading || games.length === 0}
-          >
-            <option value="">
-              {games.length === 0 ? 'No games available' : 'Choose a game...'}
-            </option>
-            {games.map((game) => (
-              <option key={game._id} value={game._id}>
-                {game.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Selected Game Info */}
-        {selectedGameId && (
-          <div className="selected-game-info">
-            <h3>Selected Game:</h3>
-            <p>{games.find(game => game._id === selectedGameId)?.name}</p>
-            <button 
-              className="proceed-btn"
-              onClick={handleProceed}
-            >
-              Manage Storage Systems →
-            </button>
-            <button 
-              className="delete-game-btn"
-              onClick={() => handleDeleteGame(selectedGameId)}
-              disabled={loading}
-            >
-              {loading ? 'Deleting...' : 'Delete Game'}
-            </button>
-          </div>
-        )}
-
-        {/* Games Count */}
-        <div className="games-count">
-          Total Games: {games.length}
+        <div className="add-game-form">
+          <form onSubmit={handleAddGame}>
+            <div className="input-group">
+              <input
+                type="text"
+                className="game-input focus-ring"
+                placeholder="Enter game name..."
+                value={newGameName}
+                onChange={(e) => setNewGameName(e.target.value)}
+                disabled={loading}
+              />
+              <button 
+                type="submit" 
+                className="add-game-btn pulse-effect focus-ring"
+                disabled={loading || !newGameName.trim()}
+              >
+                {loading ? '⏳ Adding...' : '➕ Add Game'}
+              </button>
+            </div>
+          </form>
+        </div>        <div className="games-list">
+          <h2>📚 Your Games</h2>
+          {loading && games.length === 0 ? (
+            <div className="loading loading-shimmer">Loading games...</div>
+          ) : games.length === 0 ? (
+            <div className="no-games">🎯 No games yet. Add your first game above!</div>
+          ) : (
+            <>
+              {games.map((game) => (
+                <div key={game._id} className="game-item fade-in">
+                  <div className="game-info">
+                    <span className="game-name">{game.name}</span>
+                    <button 
+                      className="select-game-btn pulse-effect"
+                      onClick={() => handleGameSelect(game._id)}
+                      disabled={loading}
+                    >
+                      {selectedGameId === game._id ? '✓ Selected' : 'Select Game'}
+                    </button>
+                  </div>
+                  <div className="game-actions">
+                    <button 
+                      className="delete-game-btn pulse-effect"
+                      onClick={() => handleDeleteGame(game._id)}
+                      disabled={loading}
+                    >
+                      {loading ? '⏳ Deleting...' : '🗑️ Delete Game'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+              
+              {selectedGameId && (
+                <div className="proceed-section fade-in">
+                  <button 
+                    className="proceed-btn pulse-effect focus-ring"
+                    onClick={handleProceed}
+                    disabled={loading}
+                  >
+                    🚀 Proceed to Storage Systems
+                  </button>
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
-    </div>  );
+    </div>
+  );
 };
 
 export default Game;

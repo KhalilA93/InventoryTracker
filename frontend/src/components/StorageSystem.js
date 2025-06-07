@@ -7,7 +7,7 @@ const API_BASE_URL = 'http://localhost:5000/api';
 const StorageSystem = ({ selectedGame, onBackToGames, onStorageSelect }) => {
   const [storageSystems, setStorageSystems] = useState([]);
   const [newStorageName, setNewStorageName] = useState('');
-  const [selectedStorage, setSelectedStorage] = useState('');  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   // Debug logging
@@ -62,36 +62,22 @@ const StorageSystem = ({ selectedGame, onBackToGames, onStorageSelect }) => {
       console.error('Error adding storage system:', err);
     } finally {
       setLoading(false);
-    }
-  };
-  const handleStorageSelect = (storageId) => {
-    setSelectedStorage(storageId);
-  };
+    }  };
 
-  const handleProceed = () => {
-    if (selectedStorage) {
-      const selectedStorageData = storageSystems.find(storage => storage._id === selectedStorage);
-      onStorageSelect(selectedStorageData);
-    }
-  };
-
-  const handleDeleteStorage = async (storageId) => {
-    if (!window.confirm('Are you sure you want to delete this storage system? This will also delete all associated items.')) {
+  const handleDeleteGame = async () => {
+    if (!window.confirm(`Are you sure you want to delete the game "${selectedGame?.name}"? This will also delete all associated storage systems and items.`)) {
       return;
     }
 
     try {
       setLoading(true);
-      await axios.delete(`${API_BASE_URL}/storage/${storageId}`);
+      await axios.delete(`${API_BASE_URL}/games/${selectedGame._id}`);
       
-      setStorageSystems(storageSystems.filter(storage => storage._id !== storageId));
-      if (selectedStorage === storageId) {
-        setSelectedStorage('');
-      }
-      setError('');
+      // Navigate back to games page after successful deletion
+      onBackToGames();
     } catch (err) {
-      setError('Failed to delete storage system');
-      console.error('Error deleting storage system:', err);
+      setError('Failed to delete game');
+      console.error('Error deleting game:', err);
     } finally {
       setLoading(false);
     }
@@ -99,88 +85,69 @@ const StorageSystem = ({ selectedGame, onBackToGames, onStorageSelect }) => {
 
   return (
     <div className="storage-container">
-      <div className="storage-content">
-        {/* Header with back button */}
+      <div className="storage-content fade-in">
         <div className="storage-header">
-          <button onClick={onBackToGames} className="back-btn">
-            ← Back to Games
+          <button onClick={onBackToGames} className="back-btn focus-ring">
+            🏠 Back to Games
           </button>
-          <h1>Storage Systems</h1>
+          <div className="storage-title">
+            <h1>🗂️ Storage Systems</h1>
+            {selectedGame && <p className="game-title">for {selectedGame.name}</p>}
+          </div>
+          {selectedGame && (
+            <button onClick={handleDeleteGame} className="delete-game-btn focus-ring">
+              🗑️ Delete Game
+            </button>
+          )}
         </div>
 
-        {/* Selected Game Info */}
-        <div className="selected-game-display">
-          <h2>Game: {selectedGame.name}</h2>
-        </div>
-        
         {error && <div className="error-message">{error}</div>}
-        
-        {/* Add Storage System Form */}
-        <form onSubmit={handleAddStorage} className="add-storage-form">
-          <div className="input-group">
-            <input
-              type="text"
-              value={newStorageName}
-              onChange={(e) => setNewStorageName(e.target.value)}
-              placeholder="Enter storage system name..."
-              className="storage-input"
-              disabled={loading}
-            />
-            <button 
-              type="submit" 
-              className="add-storage-btn"
-              disabled={loading || !newStorageName.trim()}
-            >
-              {loading ? 'Adding...' : 'Add Storage System'}
-            </button>
-          </div>
-        </form>
 
-        {/* Storage Systems Dropdown */}
-        <div className="storage-dropdown-section">
-          <label htmlFor="storage-select" className="dropdown-label">
-            Select a Storage System:
-          </label>
-          <select
-            id="storage-select"
-            value={selectedStorage}
-            onChange={(e) => handleStorageSelect(e.target.value)}
-            className="storage-dropdown"
-            disabled={loading || storageSystems.length === 0}
-          >
-            <option value="">
-              {storageSystems.length === 0 ? 'No storage systems available' : 'Choose a storage system...'}
-            </option>
-            {storageSystems.map((storage) => (
-              <option key={storage._id} value={storage._id}>
-                {storage.name}
-              </option>
-            ))}
-          </select>
-        </div>        {/* Selected Storage Info */}
-        {selectedStorage && (
-          <div className="selected-storage-info">
-            <h3>Selected Storage System:</h3>
-            <p>{storageSystems.find(storage => storage._id === selectedStorage)?.name}</p>
-            <button 
-              className="proceed-btn"
-              onClick={handleProceed}
-            >
-              Manage Items →
-            </button>
-            <button 
-              className="delete-btn"
-              onClick={() => handleDeleteStorage(selectedStorage)}
-              disabled={loading}
-            >
-              {loading ? 'Deleting...' : 'Delete Storage System'}
-            </button>
-          </div>
-        )}
-
-        {/* Storage Systems Count */}
-        <div className="storage-count">
-          Total Storage Systems: {storageSystems.length}
+        <div className="add-storage-form">
+          <form onSubmit={handleAddStorage}>
+            <div className="input-group">
+              <input
+                type="text"
+                className="storage-input focus-ring"
+                placeholder="Enter storage system name..."
+                value={newStorageName}
+                onChange={(e) => setNewStorageName(e.target.value)}
+                disabled={loading}
+              />
+              <button 
+                type="submit" 
+                className="add-storage-btn pulse-effect focus-ring"
+                disabled={loading || !newStorageName.trim()}
+              >
+                {loading ? '⏳ Adding...' : '📦 Add Storage'}
+              </button>
+            </div>
+          </form>
+        </div>        <div className="storage-list">
+          <h2>📦 Storage Systems</h2>
+          {loading && storageSystems.length === 0 ? (
+            <div className="loading loading-shimmer">Loading storage systems...</div>
+          ) : storageSystems.length === 0 ? (
+            <div className="no-storage">📦 No storage systems yet. Add your first storage system above!</div>
+          ) : (
+            storageSystems.map((storage) => (
+              <div key={storage._id} className="storage-item fade-in">
+                <div className="storage-info">
+                  <h3 className="storage-name">📦 {storage.name}</h3>
+                  <span className="storage-meta">Storage System</span>
+                </div>
+                <div className="storage-actions">
+                  <button 
+                    className="select-storage-btn pulse-effect focus-ring"
+                    onClick={() => onStorageSelect(storage)}
+                    disabled={loading}
+                  >
+                    🚀 View Items
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
