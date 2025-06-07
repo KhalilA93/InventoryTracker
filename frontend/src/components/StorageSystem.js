@@ -75,6 +75,28 @@ const StorageSystem = ({ selectedGame, onBackToGames, onStorageSelect }) => {
     }
   };
 
+  const handleDeleteStorage = async (storageId) => {
+    if (!window.confirm('Are you sure you want to delete this storage system? This will also delete all associated items.')) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await axios.delete(`${API_BASE_URL}/storage/${storageId}`);
+      
+      setStorageSystems(storageSystems.filter(storage => storage._id !== storageId));
+      if (selectedStorage === storageId) {
+        setSelectedStorage('');
+      }
+      setError('');
+    } catch (err) {
+      setError('Failed to delete storage system');
+      console.error('Error deleting storage system:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="storage-container">
       <div className="storage-content">
@@ -145,6 +167,13 @@ const StorageSystem = ({ selectedGame, onBackToGames, onStorageSelect }) => {
               onClick={handleProceed}
             >
               Manage Items →
+            </button>
+            <button 
+              className="delete-btn"
+              onClick={() => handleDeleteStorage(selectedStorage)}
+              disabled={loading}
+            >
+              {loading ? 'Deleting...' : 'Delete Storage System'}
             </button>
           </div>
         )}

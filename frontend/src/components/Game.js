@@ -65,6 +65,28 @@ const Game = ({ onGameSelect }) => {
     }
   };
 
+  const handleDeleteGame = async (gameId) => {
+    if (!window.confirm('Are you sure you want to delete this game? This will also delete all associated storage systems and items.')) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await axios.delete(`${API_BASE_URL}/games/${gameId}`);
+      
+      setGames(games.filter(game => game._id !== gameId));
+      if (selectedGameId === gameId) {
+        setSelectedGameId('');
+      }
+      setError('');
+    } catch (err) {
+      setError('Failed to delete game');
+      console.error('Error deleting game:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="game-container">
       <div className="game-content">
@@ -126,6 +148,13 @@ const Game = ({ onGameSelect }) => {
               onClick={handleProceed}
             >
               Manage Storage Systems →
+            </button>
+            <button 
+              className="delete-game-btn"
+              onClick={() => handleDeleteGame(selectedGameId)}
+              disabled={loading}
+            >
+              {loading ? 'Deleting...' : 'Delete Game'}
             </button>
           </div>
         )}
