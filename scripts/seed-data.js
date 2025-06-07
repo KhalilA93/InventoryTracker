@@ -3,7 +3,7 @@ const axios = require('axios');
 const API_BASE_URL = 'http://localhost:5000/api';
 
 async function seedSampleData() {
-  console.log('🌱 Seeding sample data...\n');
+  console.log('Seeding sample data...\n');
 
   try {
     // Create sample games
@@ -16,10 +16,9 @@ async function seedSampleData() {
     console.log('Creating games...');
     const gamePromises = games.map(game => 
       axios.post(`${API_BASE_URL}/games`, game)
-    );
-    const gameResponses = await Promise.all(gamePromises);
+    );    const gameResponses = await Promise.all(gamePromises);
     const createdGames = gameResponses.map(res => res.data);
-    console.log(`✅ Created ${createdGames.length} games`);
+    console.log(`Created ${createdGames.length} games`);
 
     // Create storage systems for each game
     const storageSystems = [
@@ -33,10 +32,9 @@ async function seedSampleData() {
     console.log('Creating storage systems...');
     const storagePromises = storageSystems.map(storage => 
       axios.post(`${API_BASE_URL}/storage`, storage)
-    );
-    const storageResponses = await Promise.all(storagePromises);
+    );    const storageResponses = await Promise.all(storagePromises);
     const createdStorages = storageResponses.map(res => res.data);
-    console.log(`✅ Created ${createdStorages.length} storage systems`);
+    console.log(`Created ${createdStorages.length} storage systems`);
 
     // Create sample items
     const items = [
@@ -49,16 +47,15 @@ async function seedSampleData() {
 
     console.log('Creating items...');
     const itemPromises = items.map(item => 
-      axios.post(`${API_BASE_URL}/items`, item)
-    );
+      axios.post(`${API_BASE_URL}/items`, item)    );
     const itemResponses = await Promise.all(itemPromises);
-    console.log(`✅ Created ${itemResponses.length} items`);
+    console.log(`Created ${itemResponses.length} items`);
 
-    console.log('\n🎉 Sample data seeding complete!');
+    console.log('\nSample data seeding complete!');
     console.log('You can now test the application with sample data.');
 
   } catch (error) {
-    console.error('❌ Error seeding data:', error.response?.data || error.message);
+    console.error('Error seeding data:', error.response?.data || error.message);
   }
 }
 

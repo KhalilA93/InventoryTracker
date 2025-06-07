@@ -61,7 +61,7 @@
 }
 
 .back-btn::before {
-  content: '←';
+  content: '< ';
   font-size: 16px;
 }
 
@@ -317,7 +317,7 @@
 }
 
 .loading::before {
-  content: '📦';
+  content: 'Loading...';
   animation: bounce 1.5s infinite;
 }
 

@@ -245,7 +245,7 @@
 }
 
 .loading::before {
-  content: '⏳';
+  content: 'Loading...';
   animation: spin 2s linear infinite;
 }
 

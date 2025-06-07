@@ -204,4 +204,4 @@ ISC License
 
 ---
 
-**Built with ❤️ using the MERN Stack**
+**Built using the MERN Stack**

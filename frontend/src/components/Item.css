@@ -60,7 +60,7 @@
 }
 
 .back-button::before {
-  content: '←';
+  content: '< ';
   font-size: 16px;
 }
 
@@ -390,7 +390,7 @@
 }
 
 .loading::before {
-  content: '🎒';
+  content: 'Loading...';
   animation: swing 2s infinite;
 }
 

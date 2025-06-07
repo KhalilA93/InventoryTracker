@@ -85,18 +85,17 @@ const StorageSystem = ({ selectedGame, onBackToGames, onStorageSelect }) => {
 
   return (
     <div className="storage-container">
-      <div className="storage-content fade-in">
-        <div className="storage-header">
+      <div className="storage-content fade-in">        <div className="storage-header">
           <button onClick={onBackToGames} className="back-btn focus-ring">
-            🏠 Back to Games
+            Back to Games
           </button>
           <div className="storage-title">
-            <h1>🗂️ Storage Systems</h1>
+            <h1>Storage</h1>
             {selectedGame && <p className="game-title">for {selectedGame.name}</p>}
           </div>
           {selectedGame && (
             <button onClick={handleDeleteGame} className="delete-game-btn focus-ring">
-              🗑️ Delete Game
+              Delete Game
             </button>
           )}
         </div>
@@ -113,27 +112,26 @@ const StorageSystem = ({ selectedGame, onBackToGames, onStorageSelect }) => {
                 value={newStorageName}
                 onChange={(e) => setNewStorageName(e.target.value)}
                 disabled={loading}
-              />
-              <button 
+              />              <button 
                 type="submit" 
                 className="add-storage-btn pulse-effect focus-ring"
                 disabled={loading || !newStorageName.trim()}
               >
-                {loading ? '⏳ Adding...' : '📦 Add Storage'}
+                {loading ? 'Adding...' : 'Add Storage'}
               </button>
             </div>
           </form>
         </div>        <div className="storage-list">
-          <h2>📦 Storage Systems</h2>
+          <h2>Storage Systems</h2>
           {loading && storageSystems.length === 0 ? (
             <div className="loading loading-shimmer">Loading storage systems...</div>
           ) : storageSystems.length === 0 ? (
-            <div className="no-storage">📦 No storage systems yet. Add your first storage system above!</div>
+            <div className="no-storage">No storage systems yet. Add your first storage system above!</div>
           ) : (
             storageSystems.map((storage) => (
               <div key={storage._id} className="storage-item fade-in">
                 <div className="storage-info">
-                  <h3 className="storage-name">📦 {storage.name}</h3>
+                  <h3 className="storage-name">{storage.name}</h3>
                   <span className="storage-meta">Storage System</span>
                 </div>
                 <div className="storage-actions">
@@ -142,7 +140,7 @@ const StorageSystem = ({ selectedGame, onBackToGames, onStorageSelect }) => {
                     onClick={() => onStorageSelect(storage)}
                     disabled={loading}
                   >
-                    🚀 View Items
+                    View Items
                   </button>
                 </div>
               </div>

@@ -117,19 +117,16 @@ function Item({ selectedStorage, onBackToStorage }) {  const [items, setItems] =
 
   return (
     <div className="item-container">
-      <div className="item-content fade-in">
-        <div className="item-header">
+      <div className="item-content fade-in">        <div className="item-header">
           <button onClick={onBackToStorage} className="back-button focus-ring">
-            ← Back to Storage
+            Back to Storage
           </button>
-          <h1>📋 Items Manager</h1>
+          <h1>Item Manager</h1>
           {selectedStorage && <p className="storage-title">in {selectedStorage.name}</p>}
         </div>
 
-        {error && <div className="error-message">{error}</div>}
-
-        <div className="add-item-section glass-morphism">
-          <h2>➕ Add New Item</h2>
+        {error && <div className="error-message">{error}</div>}        <div className="add-item-section glass-morphism">
+          <h2>Add New Item</h2>
           <form onSubmit={handleAddItem} className="add-item-form">
             <div className="form-group">
               <label htmlFor="itemName">Item Name</label>
@@ -155,29 +152,26 @@ function Item({ selectedStorage, onBackToStorage }) {  const [items, setItems] =
                 onChange={(e) => setNewItemQuantity(parseInt(e.target.value) || 1)}
                 disabled={loading}
               />
-            </div>
-            <button 
+            </div>            <button 
               type="submit" 
               className="add-item-btn pulse-effect focus-ring"
               disabled={loading || !newItemName.trim()}
             >
-              {loading ? '⏳ Adding...' : '🎒 Add Item'}
+              {loading ? 'Adding...' : 'Add Item'}
             </button>
           </form>
-        </div>
-
-        <div className="items-section">
-          <h2>🎒 Your Items</h2>
+        </div>        <div className="items-section">
+          <h2>Your Items</h2>
           {loading && items.length === 0 ? (
             <div className="loading loading-shimmer">Loading items...</div>
           ) : items.length === 0 ? (
-            <div className="no-items">🎯 No items in this storage system yet. Add your first item above!</div>
+            <div className="no-items">No items in this storage system yet. Add your first item above!</div>
           ) : (
             <div className="items-grid">
               {items.map((item) => (
                 <div key={item._id} className="item-card fade-in">
                   <div className="item-header-row">
-                    <h3 className="item-name">📦 {item.name}</h3>
+                    <h3 className="item-name">{item.name}</h3>
                     <span className="item-quantity">×{item.quantity}</span>
                   </div>                  <div className="item-actions">
                     <div className="update-section">
@@ -190,19 +184,18 @@ function Item({ selectedStorage, onBackToStorage }) {  const [items, setItems] =
                           ...updateQuantities,
                           [item._id]: parseInt(e.target.value) || 1
                         })}
-                      />
-                      <button 
+                      />                      <button 
                         onClick={() => handleUpdateItem(item._id, updateQuantities[item._id] || item.quantity)}
                         className="update-btn focus-ring"
                       >
-                        📝 Update
+                        Update
                       </button>
                     </div>
                     <button 
                       onClick={() => handleDeleteItem(item._id)}
                       className="delete-item-btn focus-ring"
                     >
-                      🗑️ Delete
+                      Delete
                     </button>
                   </div>
                 </div>

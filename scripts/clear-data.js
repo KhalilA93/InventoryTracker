@@ -3,7 +3,7 @@ const axios = require('axios');
 const API_BASE_URL = 'http://localhost:5000/api';
 
 async function clearAllData() {
-  console.log('🧹 Clearing all data...\n');
+  console.log('Clearing all data...\n');
 
   try {
     // Get all items and delete them
@@ -23,15 +23,14 @@ async function clearAllData() {
         // Delete storage system
         await axios.delete(`${API_BASE_URL}/storage/${storage._id}`);
       }
-      
-      // Delete game
+        // Delete game
       await axios.delete(`${API_BASE_URL}/games/${game._id}`);
     }
 
-    console.log('✅ All data cleared successfully!');
+    console.log('All data cleared successfully!');
 
   } catch (error) {
-    console.error('❌ Error clearing data:', error.response?.data || error.message);
+    console.error('Error clearing data:', error.response?.data || error.message);
   }
 }
 

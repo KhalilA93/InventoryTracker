@@ -88,9 +88,8 @@ const Game = ({ onGameSelect }) => {
   };
 
   return (
-    <div className="game-container">
-      <div className="game-content fade-in">
-        <h1>🎮 Game Inventory Tracker</h1>
+    <div className="game-container">      <div className="game-content fade-in">
+        <h1>Inventory Tracker</h1>
         
         {error && <div className="error-message">{error}</div>}
         
@@ -104,56 +103,52 @@ const Game = ({ onGameSelect }) => {
                 value={newGameName}
                 onChange={(e) => setNewGameName(e.target.value)}
                 disabled={loading}
-              />
-              <button 
+              />              <button 
                 type="submit" 
                 className="add-game-btn pulse-effect focus-ring"
                 disabled={loading || !newGameName.trim()}
               >
-                {loading ? '⏳ Adding...' : '➕ Add Game'}
+                {loading ? 'Adding...' : 'Add Game'}
               </button>
             </div>
           </form>
         </div>        <div className="games-list">
-          <h2>📚 Your Games</h2>
+          <h2>Your Games</h2>
           {loading && games.length === 0 ? (
             <div className="loading loading-shimmer">Loading games...</div>
           ) : games.length === 0 ? (
-            <div className="no-games">🎯 No games yet. Add your first game above!</div>
+            <div className="no-games">No games yet. Add your first game above!</div>
           ) : (
             <>
               {games.map((game) => (
                 <div key={game._id} className="game-item fade-in">
                   <div className="game-info">
-                    <span className="game-name">{game.name}</span>
-                    <button 
+                    <span className="game-name">{game.name}</span>                    <button 
                       className="select-game-btn pulse-effect"
                       onClick={() => handleGameSelect(game._id)}
                       disabled={loading}
                     >
-                      {selectedGameId === game._id ? '✓ Selected' : 'Select Game'}
+                      {selectedGameId === game._id ? 'Selected' : 'Select Game'}
                     </button>
                   </div>
-                  <div className="game-actions">
-                    <button 
+                  <div className="game-actions">                    <button 
                       className="delete-game-btn pulse-effect"
                       onClick={() => handleDeleteGame(game._id)}
                       disabled={loading}
                     >
-                      {loading ? '⏳ Deleting...' : '🗑️ Delete Game'}
+                      {loading ? 'Deleting...' : 'Delete Game'}
                     </button>
                   </div>
                 </div>
               ))}
               
               {selectedGameId && (
-                <div className="proceed-section fade-in">
-                  <button 
+                <div className="proceed-section fade-in">                  <button 
                     className="proceed-btn pulse-effect focus-ring"
                     onClick={handleProceed}
                     disabled={loading}
                   >
-                    🚀 Proceed to Storage Systems
+                    Proceed to Storage Systems
                   </button>
                 </div>
               )}
