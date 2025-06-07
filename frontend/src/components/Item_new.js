@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import './Item.css';
 
@@ -11,18 +11,16 @@ function Item({ selectedStorage, onBackToStorage }) {
   const [selectedItemId, setSelectedItemId] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
   // Fetch items for the selected storage system
-  const fetchItems = async () => {
+  const fetchItems = useCallback(async () => {
     if (!selectedStorage?._id) {
       console.log('No selected storage system, skipping fetch');
       return;
     }
-    
-    try {
+      try {
       setLoading(true);
       console.log('Fetching items for storage system:', selectedStorage._id);
-      const response = await axios.get(`${API_BASE_URL}/items?storageSystemId=${selectedStorage._id}`);
+      const response = await axios.get(`${API_BASE_URL}/items/storage/${selectedStorage._id}`);
       console.log('Items fetched:', response.data);
       setItems(response.data);
       setError('');
@@ -32,13 +30,12 @@ function Item({ selectedStorage, onBackToStorage }) {
     } finally {
       setLoading(false);
     }
-  };
-
+  }, [selectedStorage]);
   useEffect(() => {
     if (selectedStorage) {
       fetchItems();
     }
-  }, [selectedStorage]);
+  }, [selectedStorage, fetchItems]);
 
   const handleAddItem = async (e) => {
     e.preventDefault();
@@ -48,11 +45,10 @@ function Item({ selectedStorage, onBackToStorage }) {
     }
 
     try {
-      setLoading(true);
-      const response = await axios.post(`${API_BASE_URL}/items`, {
+      setLoading(true);      const response = await axios.post(`${API_BASE_URL}/items`, {
         name: newItemName,
         quantity: newItemQuantity,
-        storageSystemId: selectedStorage._id
+        storageSystem: selectedStorage._id
       });
       
       console.log('Item added:', response.data);
