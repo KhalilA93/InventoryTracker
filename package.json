@@ -1,15 +1,28 @@
 {
-  "name": "invtrackernew",
+  "name": "inventory-tracker",
   "version": "1.0.0",
-  "description": "",
-  "main": "seed-test-data.js",
+  "description": "MERN Stack Inventory Tracker - A hierarchical inventory management system for games, storage systems, and items",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "backend": "cd backend && npm start",
+    "frontend": "cd frontend && npm start",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install"
   },
-  "keywords": [],
+  "keywords": [
+    "inventory",
+    "tracker",
+    "MERN",
+    "React",
+    "Node.js",
+    "MongoDB",
+    "Express"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
   "dependencies": {
     "axios": "^1.9.0"
   }

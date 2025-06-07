@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useParams, useLocation } from 'react-router-dom';
 import Game from './components/Game';
 import StorageSystem from './components/StorageSystem';
-import Item from './components/Item_new';
+import Item from './components/Item';
 import './App.css';
-
-// Force recompilation - Item component clean rebuild
 
 // Wrapper component for Game page
 function GamePage() {
@@ -73,11 +71,10 @@ function ItemPage() {
     JSON.parse(localStorage.getItem(`game_${gameId}`)) || 
     null;
   
-  const [selectedStorage, setSelectedStorage] = useState(
+  const selectedStorage = 
     location.state?.selectedStorage || 
     JSON.parse(localStorage.getItem(`storage_${storageId}`)) || 
-    null
-  );
+    null;
 
   // Save storage to localStorage for page refreshes
   useEffect(() => {
